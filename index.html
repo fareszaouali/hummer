@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <title>Se7a</title>
+        <script src="js/three.min.js"></script>
+        <script src="js/OrbitControls.js"></script>
+        <script src="js/gltf.min.js"></script>
+    </head>
+    <body >
+    </body>
+</html>
+<script>
+    var scene,camera,orbit,spotlight,loader,hummer;
+            var rotation =true;
+
+    function init(){
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(55,window.innerWidth/window.innerHeight,45,300000);
+        camera.position.set(15,7,1);
+        renderer = new THREE.WebGLRenderer();
+        renderer.setClearColor(0xffe0c0);
+        renderer.setSize(window.innerWidth,window.innerHeight);
+       document.body.appendChild(renderer.domElement);
+       orbit=new THREE.OrbitControls(camera,renderer.domElement);
+       orbit.minDistance = 500;
+       orbit.maxDistance = 1500;
+       light = new THREE.AmbientLight(0x808080);
+       scene.add(light);
+       spotlight= new THREE.SpotLight(0xffffff,1.0)
+       spotlight.position.set(-100,35,100);
+       scene.add(spotlight);
+       loader = new THREE.GLTFLoader();
+       loader.load("Models/hummer/scene.gltf",function(gltf){
+           hummer=gltf.scene;
+           camera.lookAt(hummer.position)
+           hummer.scale.set(100,100,100);
+           scene.add(gltf.scene)});
+        
+        
+    }
+    
+    function render(){
+        requestAnimationFrame(render);
+        renderer.render(scene,camera);
+        if (rotation==true){
+            hummer.rotation.y += 0.01;
+            
+        }
+    }
+    init();
+    render();
+</script>
